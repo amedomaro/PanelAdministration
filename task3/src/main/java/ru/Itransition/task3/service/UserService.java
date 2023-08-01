@@ -1,13 +1,12 @@
-package admin.service;
+package ru.Itransition.task3.service;
 
-import admin.repository.RoleRepository;
-import admin.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import admin.model.Status;
-import admin.model.User;
-
+import ru.Itransition.task3.model.Status;
+import ru.Itransition.task3.model.User;
+import ru.Itransition.task3.repository.RoleRepository;
+import ru.Itransition.task3.repository.UserRepository;
 import java.util.Date;
 
 @Service

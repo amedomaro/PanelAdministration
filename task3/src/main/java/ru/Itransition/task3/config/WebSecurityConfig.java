@@ -1,4 +1,4 @@
-package admin.config;
+package ru.Itransition.task3.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -8,7 +8,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import admin.service.UserAuthService;
+import ru.Itransition.task3.service.UserAuthService;
 
 @Configuration
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {

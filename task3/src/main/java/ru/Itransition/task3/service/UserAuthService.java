@@ -1,10 +1,8 @@
-package admin.service;
+package ru.Itransition.task3.service;
 
 import java.util.Collections;
 import java.util.Date;
 import java.util.Optional;
-
-import admin.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -12,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import ru.Itransition.task3.repository.UserRepository;
 
 
 @Service
@@ -26,7 +25,7 @@ public class UserAuthService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<admin.model.User> myUser = userRepository.findByUsername(username);
+        Optional<ru.Itransition.task3.model.User> myUser = userRepository.findByUsername(username);
         if (myUser.get().isAccountNonLocked(myUser.get())) {
             myUser.get().setUpdated(new Date());
             userRepository.save(myUser.get());

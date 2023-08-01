@@ -1,6 +1,5 @@
-package admin.controllers;
+package ru.Itransition.task3.controllers;
 
-import admin.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -8,9 +7,10 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import admin.model.Status;
-import admin.model.User;
-import admin.service.UserAuthService;
+import ru.Itransition.task3.model.Status;
+import ru.Itransition.task3.model.User;
+import ru.Itransition.task3.repository.UserRepository;
+import ru.Itransition.task3.service.UserAuthService;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 

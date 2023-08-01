@@ -1,4 +1,4 @@
-package admin.model;
+package ru.Itransition.task3.model;
 
 import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;

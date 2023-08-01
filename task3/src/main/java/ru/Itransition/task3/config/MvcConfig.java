@@ -1,4 +1,4 @@
-package admin.config;
+package ru.Itransition.task3.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;

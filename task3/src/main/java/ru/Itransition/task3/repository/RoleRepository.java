@@ -1,7 +1,7 @@
-package admin.repository;
+package ru.Itransition.task3.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import admin.model.Role;
+import ru.Itransition.task3.model.Role;
 
 import java.util.Optional;
 

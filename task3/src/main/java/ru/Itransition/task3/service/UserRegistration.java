@@ -1,4 +1,4 @@
-package admin.service;
+package ru.Itransition.task3.service;
 
 import lombok.Data;
 import javax.validation.constraints.NotBlank;
