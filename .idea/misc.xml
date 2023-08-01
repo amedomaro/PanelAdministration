@@ -4,6 +4,7 @@
     <option name="originalFiles">
       <list>
         <option value="$PROJECT_DIR$/task3/pom.xml" />
+        <option value="$PROJECT_DIR$/adminPanel/pom.xml" />
       </list>
     </option>
   </component>
