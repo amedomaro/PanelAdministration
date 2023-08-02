@@ -52,7 +52,7 @@
                     <input type="password" id="repeatPassword" th:field="${user.repeatPassword}" class="form-control" placeholder="Повторите новый пароль">
                     <small class="form-text text-danger" th:each="err:${#fields.errors('repeatPassword')}">Validation error</small>
                 </div>
-                <button type="submit" class="btn btn-primary">Зарегистрировать</button>
+                <button type="submit" class="btn btn-primary" style="margin-top: 20px">Зарегистрировать</button>
             </form>
         </div>
     </div>

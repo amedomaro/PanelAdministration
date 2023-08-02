@@ -3,9 +3,7 @@ package ru.Itransition.task3.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import ru.Itransition.task3.model.Status;
 import ru.Itransition.task3.model.User;
 import ru.Itransition.task3.repository.UserRepository;
@@ -14,8 +12,6 @@ import ru.Itransition.task3.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
-import java.util.Optional;
 
 
 @Controller
@@ -40,18 +36,18 @@ public class UserController {
         this.userRepository = userRepository;
     }
 
-    @GetMapping("/allUsers")
+    @GetMapping("/allAdmin")
     public String showUsers(Model model) {
         Iterable<User> user = userRepository.findAll();
         model.addAttribute("user", user);
-        return "allUsers";
+        return "allAdmin";
     }
 
     @PostMapping("/users/delete/{id}")
     private String delete(@PathVariable(value = "id") Long id) {
         user = userRepository.findById(id).orElseThrow();
         userRepository.delete(user);
-        return "redirect:/allUsers";
+        return "redirect:/allAdmin";
     }
 
     @PostMapping("/users/block/{id}")
@@ -59,7 +55,7 @@ public class UserController {
         user = userRepository.findById(id).orElseThrow();
         user.setStatus(Status.BLOCKED);
         userRepository.save(user);
-        return "redirect:/allUsers";
+        return "redirect:/allAdmin";
     }
 
     @PostMapping("/users/unlockUser/{id}")
@@ -67,7 +63,7 @@ public class UserController {
         user = userRepository.findById(id).orElseThrow();
         user.setStatus(Status.ACTIVE);
         userRepository.save(user);
-        return "redirect:/allUsers";
+        return "redirect:/allAdmin";
     }
 
     @GetMapping("/my-profile")
