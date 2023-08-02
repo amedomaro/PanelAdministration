@@ -1,8 +1,11 @@
 package ru.Itransition.task3.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 import ru.Itransition.task3.model.Status;
 import ru.Itransition.task3.model.User;
 import ru.Itransition.task3.repository.RoleRepository;
@@ -24,6 +27,10 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
+    public Authentication getCurrentUser() {
+        return SecurityContextHolder.getContext().getAuthentication();
+    }
+
     public void register(UserRegistration userRegistration){
         User user = new User();
         user.setUsername(userRegistration.getUsername());
@@ -35,5 +42,10 @@ public class UserService {
         user.setUpdated(new Date());
         user.setStatus(Status.ACTIVE);
         userRepository.save(user);
+    }
+
+    public Model showProfile(Model model, User user) {
+        model.addAttribute("user", user);
+        return model;
     }
 }

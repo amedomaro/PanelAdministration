@@ -1,24 +1,28 @@
 package ru.Itransition.task3.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import ru.Itransition.task3.model.Status;
 import ru.Itransition.task3.model.User;
 import ru.Itransition.task3.repository.UserRepository;
 import ru.Itransition.task3.service.UserAuthService;
+import ru.Itransition.task3.service.UserService;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+import java.util.Optional;
 
 
 @Controller
 public class UserController {
 
     private User user;
+    private final UserService userService;
     private UserAuthService userAuthService;
     private HttpServletRequest httpServletRequest;
     private HttpServletResponse httpServletResponse;
@@ -27,8 +31,9 @@ public class UserController {
     private UserRepository userRepository;
 
     @Autowired
-    public UserController(UserAuthService userAuthService, HttpServletRequest httpServletRequest,
+    public UserController(UserService userService, UserAuthService userAuthService, HttpServletRequest httpServletRequest,
                           HttpServletResponse httpServletResponse, UserRepository userRepository) {
+        this.userService = userService;
         this.userAuthService = userAuthService;
         this.httpServletRequest = httpServletRequest;
         this.httpServletResponse = httpServletResponse;
@@ -42,97 +47,46 @@ public class UserController {
         return "allUsers";
     }
 
-    @RequestMapping(value = "/target", method = RequestMethod.GET)
-    public String userTarget(HttpServletRequest request) {
-        String[] checkBox = request.getParameterValues("checkBoxUser");
-        String[] delete = request.getParameterValues("delete");
-        String[] block = request.getParameterValues("block");
-        String[] unlock = request.getParameterValues("unlock");
-        if (checkBox == null) return "redirect:/allUsers";
-        if (delete != null) deleteUser(checkBox);
-        if (block != null) blockUser(checkBox);
-        if (unlock != null) unlockUser(checkBox);
+    @PostMapping("/users/delete/{id}")
+    private String delete(@PathVariable(value = "id") Long id) {
+        user = userRepository.findById(id).orElseThrow();
+        userRepository.delete(user);
         return "redirect:/allUsers";
     }
 
-    private String deleteUser(String[] checkBox) {
-        for (String id : checkBox) {
-            user = userRepository.findById(Long.parseLong(id)).orElseThrow();
-            userRepository.delete(user);
-        }
+    @PostMapping("/users/block/{id}")
+    private String blockUser(@PathVariable(value = "id") Long id) {
+        user = userRepository.findById(id).orElseThrow();
+        user.setStatus(Status.BLOCKED);
+        userRepository.save(user);
         return "redirect:/allUsers";
     }
 
-    private String blockUser(String[] checkBox) {
-        boolean isFlag = false;
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
-        for (String id : checkBox) {
-            user = userRepository.findById(Long.parseLong(id)).orElseThrow();
-            user.setStatus(Status.BLOCKED);
-            userRepository.save(user);
-            if (user.getUsername().equals(auth.getName())) isFlag = true;
-        }
-        if (isFlag){
-            new SecurityContextLogoutHandler().logout(httpServletRequest, httpServletResponse, auth);
-            return "redirect:/login";
-        }
+    @PostMapping("/users/unlockUser/{id}")
+    private String unlockUser(@PathVariable(value = "id") Long id) {
+        user = userRepository.findById(id).orElseThrow();
+        user.setStatus(Status.ACTIVE);
+        userRepository.save(user);
         return "redirect:/allUsers";
     }
 
-    private String unlockUser(String[] checkBox) {
-        for (String id : checkBox) {
-            user = userRepository.findById(Long.parseLong(id)).orElseThrow();
-            user.setStatus(Status.ACTIVE);
-            userRepository.save(user);
-        }
-        return "redirect:/allUsers";
+    @GetMapping("/my-profile")
+    public String showMyProfile(Model model) {
+        userService.showProfile(model, userRepository.findByUsername(userService.getCurrentUser().getName()).orElseThrow());
+        return "my-profile";
     }
 
-//    @RequestMapping(value = "/block", method = RequestMethod.GET)
-//    public String userIsActive(HttpServletRequest request,
-//                               HttpServletResponse response) {
-//
-//        String[] check = request.getParameterValues("isChecked");
-//        if (check == null) {
-//            return "redirect:/allUsers";
-//        } else {
-//            for (int i = 0; i < check.length; i++) {
-//                Long id = Long.parseLong(check[i]);
-//                user = userRepository.getById(id);
-//                user.setStatus(Status.BLOCKED);
-//                userRepository.save(user);
-//            }
-//        }
-//        return "redirect:/allUsers";
-//    }
-//
-//    @GetMapping("/users/delete/{id}")
-//    public String delete(@PathVariable(value = "id") Long id) {
-//        user = userRepository.findById(id).orElseThrow();
-//        userRepository.delete(user);
-//        return "redirect:/allUsers";
-//    }
-//
-//    @RequestMapping(value = "/users/blocked/{id}", method = RequestMethod.GET)
-//    public String logoutPage(HttpServletRequest request, HttpServletResponse response,
-//                             @PathVariable(value = "id") Long id) {
-//        user = userRepository.findById(id).orElseThrow();
-//        user.setStatus(Status.BLOCKED);
-//        userRepository.save(user);
-//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-//        if (user.getUsername().equals(auth.getName())) {
-//            new SecurityContextLogoutHandler().logout(request, response, auth);
-//            return "redirect:/login?logout";
-//        }
-//        return "redirect:/allUsers";
-//    }
-//
-//    @GetMapping("/users/blockUnblock/{id}")
-//    public String blockUnblock(@PathVariable(value = "id") Long id) {
-//        user = userRepository.findById(id).orElseThrow();
-//        user.setStatus(user.getStatus().equals(Status.BLOCKED) ? Status.ACTIVE : Status.BLOCKED);
-//        userRepository.save(user);
-//        return "redirect:/allUsers";
+    @GetMapping("/my-profile/{id}")
+    public String showUserProfile(@PathVariable(name = "id") long id, Model model) {
+        userService.showProfile(model, userRepository.findById(id).orElseThrow());
+        return "my-profile";
+    }
+
+
+
+//    @PostMapping("/my-profile/{user}")
+//    public String editMyProfile(@PathVariable User user, @Valid User newUser,
+//                                BindingResult bindingResult, @RequestParam Optional<MultipartFile> newAvatar) {
+//        return userService.userUpdate(user, bindingResult, newAvatar);
 //    }
 }
