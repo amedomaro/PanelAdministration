@@ -3,6 +3,7 @@ package ru.Itransition.task3.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.Itransition.task3.model.Status;
 import ru.Itransition.task3.model.User;
@@ -12,6 +13,7 @@ import ru.Itransition.task3.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 
 @Controller
@@ -66,23 +68,20 @@ public class UserController {
         return "redirect:/allAdmin";
     }
 
-    @GetMapping("/my-profile")
+    @GetMapping("/edit-profile")
     public String showMyProfile(Model model) {
         userService.showProfile(model, userRepository.findByUsername(userService.getCurrentUser().getName()).orElseThrow());
-        return "my-profile";
+        return "edit-profile";
     }
 
-    @GetMapping("/my-profile/{id}")
+    @GetMapping("/edit-profile/{id}")
     public String showUserProfile(@PathVariable(name = "id") long id, Model model) {
         userService.showProfile(model, userRepository.findById(id).orElseThrow());
-        return "my-profile";
+        return "edit-profile";
     }
 
-
-
-//    @PostMapping("/my-profile/{user}")
-//    public String editMyProfile(@PathVariable User user, @Valid User newUser,
-//                                BindingResult bindingResult, @RequestParam Optional<MultipartFile> newAvatar) {
-//        return userService.userUpdate(user, bindingResult, newAvatar);
-//    }
+    @PostMapping("/edit-profile/{user}")
+    public String editProfile(@PathVariable User user, @Valid User newUser, BindingResult bindingResult) {
+        return userService.userUpdate(user, bindingResult);
+    }
 }

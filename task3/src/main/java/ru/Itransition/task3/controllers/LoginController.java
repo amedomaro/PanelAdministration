@@ -46,6 +46,6 @@ public class LoginController {
         }
 
         userService.register(userRegistration);
-        return "redirect:/allUsers";
+        return "redirect:/allAdmin";
     }
 }

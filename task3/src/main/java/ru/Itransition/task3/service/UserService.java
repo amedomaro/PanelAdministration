@@ -6,11 +6,14 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.multipart.MultipartFile;
 import ru.Itransition.task3.model.Status;
 import ru.Itransition.task3.model.User;
 import ru.Itransition.task3.repository.RoleRepository;
 import ru.Itransition.task3.repository.UserRepository;
 import java.util.Date;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -47,5 +50,11 @@ public class UserService {
     public Model showProfile(Model model, User user) {
         model.addAttribute("user", user);
         return model;
+    }
+
+    public String userUpdate(User user, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) return "edit-profile";
+        userRepository.save(user);
+        return "redirect:/allAdmin";
     }
 }

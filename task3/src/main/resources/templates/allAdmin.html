@@ -53,7 +53,7 @@
                                     aria-haspopup="true" aria-expanded="false" style="color:forestgreen">Действия
                             </button>
                             <div class="dropdown-menu">
-                                <form th:action="'/my-profile/' + ${el.id} " method="get">
+                                <form th:action="'/edit-profile/' + ${el.id} " method="get">
                                     <button class="btn btn-outline-dark mt-1" type="submit">
                                         Редактировать
                                     </button>
@@ -64,7 +64,7 @@
                                     </button>
                                 </form>
                                 <form th:action="'/users/unlockUser/' + ${el.id} " method="post">
-                                    <button class="btn btn-outline-dark mt-1" type="submit">
+                                    <button class="btn btn-outline-dark mt-1" type="submit" style="color:forestgreen">
                                         Разблокировать
                                     </button>
                                 </form>
