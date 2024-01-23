@@ -57,4 +57,11 @@ public class UserService {
         userRepository.save(user);
         return "redirect:/allAdmin";
     }
+
+    public String updatePassword(User user, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) return "edit-profile";
+
+        userRepository.save(user);
+        return "redirect:/allAdmin";
+    }
 }

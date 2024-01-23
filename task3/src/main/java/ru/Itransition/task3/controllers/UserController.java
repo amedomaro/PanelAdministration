@@ -84,4 +84,15 @@ public class UserController {
     public String editProfile(@PathVariable User user, @Valid User newUser, BindingResult bindingResult) {
         return userService.userUpdate(user, bindingResult);
     }
+
+    @GetMapping("/edit-password/{id}")
+    public String showUserPassword(@PathVariable(name = "id") long id, Model model) {
+        userService.showProfile(model, userRepository.findById(id).orElseThrow());
+        return "edit-password";
+    }
+
+    @PostMapping("/edit-password/{user}")
+    public String editPassword(@PathVariable User user, @Valid User newUser, BindingResult bindingResult) {
+        return userService.updatePassword(user, bindingResult);
+    }
 }

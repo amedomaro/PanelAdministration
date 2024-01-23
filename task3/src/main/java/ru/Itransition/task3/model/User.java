@@ -24,6 +24,8 @@ public class User extends BaseEntity {
     @Column(name = "password")
     private String password;
 
+    private String repeatPassword;
+
     private String role = "USER";
 
     public boolean isAccountNonLocked(User user) {

@@ -13,7 +13,7 @@
           enctype="multipart/form-data">
         <div class="row">
             <div class="col-md-5 mx-auto">
-                <div class="p-3 py-5">
+                <div class="p-3 py-4">
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h4 class="text-center mx-auto">Редактирование профиля</h4>
                     </div>
@@ -38,39 +38,48 @@
                         </div>
                     </div>
                     <div class="row mt-3 text-center">
-<!--                        <div class="col-md-12">-->
-<!--                            <input type="file" class="form-control" id="customFile" name="newAvatar"/>-->
-<!--                            <label class="form-label" for="customFile">input file</label>-->
-<!--                        </div>-->
                         <div class="col-md-12">
                             <input type="text" th:field="*{email}" name="email" id="email" class="form-control">
                             <label class="form-label" for="email">Email</label>
                             <small class="form-text text-danger" th:if="${#fields.hasErrors('email')}"
                                    th:errors="*{email}">error</small>
                         </div>
-                        <!-- Line-->
-                        <hr class="my-3">
                         <!-- Button -->
-                        <div class="mt-5 text-center">
-                            <button class="btn btn-secondary profile-button" type="submit">Сохранить изменения</button>
+                        <div class="mt-3 text-center">
+                            <button class="btn btn-primary" type="submit">Сохранить изменения</button>
                         </div>
-                        <br><br><br>
-                        <!--Links-->
-                        <a class="nav-link mt-3" href="/allAdmin"><-- Вернуться назад --></a><br>
 
-                                <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-                                <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
-                                <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-                                </tbody>
-                            </table>
-
-
-                        </div>
+                        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+                        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+                        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
                     </div>
                 </div>
             </div>
         </div>
     </form>
+</div>
+
+<div class="col-md-3 mx-auto">
+    <!-- Line-->
+    <hr class="my-3">
+
+    <div class="btn-toolbar text-center" role="toolbar" aria-label="Toolbar with button groups">
+        <div class="d-flex justify-content-start">
+            <form th:action="@{'/edit-password/' + ${user.id}}" th:object="${user}" method="get"
+                  enctype="multipart/form-data">
+                <button class="btn btn-secondary" type="submit">Изменить пароль</button>
+            </form>
+        </div>
+        <div class="col  d-flex justify-content-end align-items-center">
+            <form th:action="@{/allAdmin}" method="get" enctype="multipart/form-data">
+                <button class="btn btn-secondary" type="submit">Вернуться назад</button>
+            </form>
+        </div>
+    </div>
+
+    <hr class="my-3">
+    <!--Links-->
+    <a class="nav-link mt-3 text-center" href="/allAdmin"><-- Вернуться назад --></a><br>
 </div>
 </body>
 </html>
